@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+	<script>
+		//var skillTextBox = document.getElementById("SkillMultipler");
+
+		function expForLevel(level)
+		{
+    		var basis = Number(document.getElementById('base').value);
+    		var extra = Number(document.getElementById('extra').value);
+    		var acc_a = Number(document.getElementById('accela').value);
+    		var acc_b = Number(document.getElementById('accelb').value);
+    		return Math.round(basis*(Math.pow(level-1, 0.9+acc_a/250))*level*(level+1)/(6+Math.pow(level,2)/50/acc_b)+(level-1)*extra);
+        }
+
+		function getResults()
+		{
+			var preLvl = document.getElementById("preLvl");
+			var nexLvl = document.getElementById("nexLvl");
+			var Lvl1 = document.getElementById("Lvl1");
+			var minLvl = document.getElementById("minLvl");
+			var aveLvl = document.getElementById("aveLvl");
+
+			var min = Number(document.getElementById('min').value);
+			var ave = Number(document.getElementById('ave').value);
+			var max = Number(document.getElementById('max').value);
+
+			var gain = Number(document.getElementById('gain').value);
+
+			var result = "";
+			result += "<br><font size='5' style='text-decoration: underline'>Results:</font><br><br>";
+
+			for(var i = min; i <= max; i += 1)
+			{
+				var nextLevel = expForLevel(i + 1) - expForLevel(i);
+				var prevLevel = expForLevel(i) - expForLevel(i - 1);
+				var total = expForLevel(i);
+				var totalFromMin = expForLevel(i) - expForLevel(min);
+				var totalFromAve = expForLevel(i) - expForLevel(ave);
+
+				var nextDefeats = Math.ceil(nextLevel / gain);
+				var prevDefeats = Math.ceil(prevLevel / gain);
+				var totalDefeats = Math.ceil(total / gain);
+				var totalFromMinDefeats = Math.ceil(totalFromMin / gain);
+				var totalFromAveDefeats = Math.ceil(totalFromAve / gain);
+
+				if(i == 1)
+				{
+					prevLevel = 0;
+					prevDefeats = 0;
+				}
+
+				result += "Level " + String(i) + "<br>";
+				if(preLvl.checked)
+				{
+					result += "EXP from previous level: " + String(prevLevel) + " (" + String(prevDefeats) + " Enemies)<br>";
+				}
+				if(nexLvl.checked)
+				{
+					result += "EXP for next level: " + String(nextLevel) + " (" + String(nextDefeats) + " Enemies)<br>";
+				}
+				if(Lvl1.checked)
+				{
+					result += "Total EXP from level 1: " + String(total) + " (" + String(totalDefeats) + " Enemies)<br>";
+				}
+				if(minLvl.checked)
+				{
+					result += "Total EXP from level " + String(min) + ": " + String(totalFromMin) + " (" + String(totalFromMinDefeats) + " Enemies)<br>";
+				}
+				if(aveLvl.checked && i > ave)
+				{
+					result += "Total EXP from level " + String(ave) + ": " + String(totalFromAve) + " (" + String(totalFromAveDefeats) + " Enemies)<br>";
+				}
+
+				result += "<br>";
+			}
+
+			document.getElementById('Results').innerHTML = String(result);
+		}
+	</script>
+
+	<head>
+		<title>RPG EXP Calculator</title>
+		<link rel="stylesheet" href="desktop.css" media="screen" />
+		<link rel="stylesheet" href="mobile.css" media="only screen and (max-device width:480px)"/>
+		<meta name="viewport" content="width=320,user-scalable=false" />
+	</head>
+
+	<body>
+
+		<p>
+			<img src="MVLogo.png" alt="RPG Maker MV" width = 400px height = auto>
+		</p>
+
+		<p>
+			<img src="SumRndmDdeLogo3.png" alt="SumRndmDde" width = 400px height = auto>
+		</p>
+
+		<h1>RPG Maker<br>EXP Calculator</h1>
+		<h1>Version: 1.00</h1>
+		<p style="background-color:white;">
+			Hello!
+			<br>
+			Welcome to a RPG Maker calculator!
+			<br>
+			<br>
+			The following is a calculator for determining the amount
+			of times an Actor using a Class with a specified EXP curve 
+			would have to gain a certain amount of EXP before
+			leveling to their next level.
+			<br>
+			<br>
+			This can be primaily used to determine the correct encounter
+			rates one should set in certain areas along with the 
+			amounts of EXP to set for each enemy the Player's party
+			may/will encounter.
+			<br>
+			<br>
+			Please enjoy!
+			<br>
+			<br>
+			- SumRndmDde
+			<br>
+			<br>
+			<a href="http://www.youtube.com/SumRndmDde">SumRndmDde's YouTube Channel</a>
+			<br>
+			<br>
+		</p>
+
+		<p style="background-color:#6495ED;">
+			<br>
+			<font size="5" style="text-decoration: underline">Set Levels:</font>
+			<br>
+			<br>
+			Minimum Level:
+			<br>
+			<input type="tel" onchange="getResults()" id="min" name="min" value="1"><br>
+			<br>
+			Average Level:
+			<br>
+			<input type="tel" onchange="getResults()" id="ave" name="ave" value="7"><br>
+			<br>
+			Maximum Level:
+			<br>
+			<input type="tel" onchange="getResults()" id="max" name="max" value="10"><br>
+			<br>
+		</p>
+		<p style="background-color:#9ACD32;">
+			<br>
+			<font size="5" style="text-decoration: underline">Set Your EXP Curve:</font>
+			<br>
+			<br>
+			Base Value:
+			<br>
+			<input type="tel" onchange="getResults()" id="base" name="base" value="30"><br>
+			<br>
+			Extra Value:
+			<br>
+			<input type="tel" onchange="getResults()" id="extra" name="extra" value="20"><br>
+			<br>
+			Acceleration A:
+			<br>
+			<input type="tel" onchange="getResults()" id="accela" name="accela" value="30"><br>
+			<br>
+			Acceleration A:
+			<br>
+			<input type="tel" onchange="getResults()" id="accelb" name="accelb" value="30"><br>
+			<br>
+			<br>
+		</p>
+		<p style="background-color:#FF7F50;">
+			<br>
+			<font size="5" style="text-decoration: underline">Set EXP Gain from Enemy:</font>
+			<br>
+			<br>
+			EXP Gain:
+			<br>
+			<input type="tel" onchange="getResults()" id="gain" name="gain" value="100"><br>
+			<br>
+		</p>
+		<p style="background-color:#FFA500">
+			<br>
+			<font size="5" style="text-decoration: underline">Options:</font>
+			<br>
+			<br>
+			Select which levels you wish to view:
+			<br>
+			<br>
+			<input type="checkbox" name="preLvl" id="preLvl" value="preLvl" onchange='getResults()'> Previous Level<br>
+			<input type="checkbox" name="nexLvl" id="nexLvl" value="nexLvl" onchange='getResults()' checked> Next Level<br>
+			<input type="checkbox" name="Lvl1" id="Lvl1" value="Lvl1" onchange='getResults()'> First Level (Lv 1)<br>
+			<input type="checkbox" name="minLvl" id="minLvl" value="minLvl" onchange='getResults()' checked> Minimum Level<br>
+			<input type="checkbox" name="aveLvl" id="aveLvl" value="aveLvl" onchange='getResults()' checked> Average Level<br>
+			<br>
+		</p>
+
+		<p id="Results" style="background-color:white;">
+			<br>
+			<font size='5' style='text-decoration: underline'>Results:</font>
+			<br>
+			<script>
+				getResults();
+			</script>
+			<br>
+			<br>
+		</p>
+
+		<p style="font-family:terminal;background-color:#F0E68C;">
+			<br>
+			Changelog:<br>
+ 			<br>
+			<font size="3" style='text-decoration: underline'>[Version 1.00]</font><br>
+ 			Calculator Created<br>
+ 			<br>
+		</p>
+
+		<p>
+			<br>
+			<br>
+			<br>
+			Found an error?<br>
+			Wish to request something?<br>
+			Please visit me on my YouTube Channel!<br>
+		</p>
+	</body>
+
+</html>
