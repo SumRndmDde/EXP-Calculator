@@ -51,7 +51,7 @@
 				}
 
 				result += "Level " + String(i) + "<br>";
-				if(preLvl.checked)
+				if(preLvl.checked && i != 1)
 				{
 					result += "EXP from previous level: " + String(prevLevel) + " (" + String(prevDefeats) + " Enemies)<br>";
 				}
@@ -59,11 +59,11 @@
 				{
 					result += "EXP for next level: " + String(nextLevel) + " (" + String(nextDefeats) + " Enemies)<br>";
 				}
-				if(Lvl1.checked)
+				if(Lvl1.checked && i != 1)
 				{
 					result += "Total EXP from level 1: " + String(total) + " (" + String(totalDefeats) + " Enemies)<br>";
 				}
-				if(minLvl.checked)
+				if(minLvl.checked && i != min)
 				{
 					result += "Total EXP from level " + String(min) + ": " + String(totalFromMin) + " (" + String(totalFromMinDefeats) + " Enemies)<br>";
 				}
@@ -132,6 +132,12 @@
 			<font size="5" style="text-decoration: underline">Set Levels:</font>
 			<br>
 			<br>
+			Use the following to set the range of levels you wish to focus on.<br>
+			The "Average Level" parameter is not mandatory; however, it is recommended
+			to be used as a placeholder that represents the level you wish to 
+			focus on.
+			<br>
+			<br>
 			Minimum Level:
 			<br>
 			<input type="tel" onchange="getResults()" id="min" name="min" value="1"><br>
@@ -150,19 +156,23 @@
 			<font size="5" style="text-decoration: underline">Set Your EXP Curve:</font>
 			<br>
 			<br>
-			Base Value:
+			Simply copy the values from the EXP Curve section of the Class your Actor
+			or Actors are using and input them into here.
+			<br>
+			<br>
+			Base Value (10-50):
 			<br>
 			<input type="tel" onchange="getResults()" id="base" name="base" value="30"><br>
 			<br>
-			Extra Value:
+			Extra Value (0-40):
 			<br>
 			<input type="tel" onchange="getResults()" id="extra" name="extra" value="20"><br>
 			<br>
-			Acceleration A:
+			Acceleration A (10-50):
 			<br>
 			<input type="tel" onchange="getResults()" id="accela" name="accela" value="30"><br>
 			<br>
-			Acceleration A:
+			Acceleration B (10-50):
 			<br>
 			<input type="tel" onchange="getResults()" id="accelb" name="accelb" value="30"><br>
 			<br>
@@ -170,12 +180,19 @@
 		</p>
 		<p style="background-color:#FF7F50;">
 			<br>
-			<font size="5" style="text-decoration: underline">Set EXP Gain from Enemy:</font>
+			<font size="5" style="text-decoration: underline">EXP Gain from Enemy:</font>
+			<br>
+			<br>
+			Use this to set the amount of EXP your Actors will gain from defeating 
+			a certain Enemy or Troop.<br>
+			Manipulate this value in order to find the correct number you should 
+			use to have your Actor(s) level up the correct amount.
 			<br>
 			<br>
 			EXP Gain:
 			<br>
 			<input type="tel" onchange="getResults()" id="gain" name="gain" value="100"><br>
+			<br>
 			<br>
 		</p>
 		<p style="background-color:#FFA500">
@@ -183,15 +200,31 @@
 			<font size="5" style="text-decoration: underline">Options:</font>
 			<br>
 			<br>
-			Select which levels you wish to view:
+			Select what you want to see in the results section.
+			You will be shown how much EXP and Enemy Defeats it takes to get to or from each of these levels
+			relative to the specified level.
 			<br>
 			<br>
-			<input type="checkbox" name="preLvl" id="preLvl" value="preLvl" onchange='getResults()'> Previous Level<br>
-			<input type="checkbox" name="nexLvl" id="nexLvl" value="nexLvl" onchange='getResults()' checked> Next Level<br>
+			<input type="checkbox" name="preLvl" id="preLvl" value="preLvl" onchange='getResults()' checked> Previous Level<br>
+			<input type="checkbox" name="nexLvl" id="nexLvl" value="nexLvl" onchange='getResults()'> Next Level<br>
 			<input type="checkbox" name="Lvl1" id="Lvl1" value="Lvl1" onchange='getResults()'> First Level (Lv 1)<br>
 			<input type="checkbox" name="minLvl" id="minLvl" value="minLvl" onchange='getResults()' checked> Minimum Level<br>
 			<input type="checkbox" name="aveLvl" id="aveLvl" value="aveLvl" onchange='getResults()' checked> Average Level<br>
-			<br>
+			<br><br>
+			(Saving will store all your inputted data into Cookies and will be retreieved once you load.)
+			<br><br>
+			<button onclick='reset()'>
+				<font size="2">Reset Information</font>
+			</button>
+			<br><br>
+			<button onclick='save()'>
+				<font size="2">Save Information</font>
+			</button>
+			<br><br>
+			<button onclick='load()'>
+				<font size="2">Load Information</font>
+			</button>
+			<br><br>
 		</p>
 
 		<p id="Results" style="background-color:white;">
@@ -223,5 +256,52 @@
 			Please visit me on my YouTube Channel!<br>
 		</p>
 	</body>
+
+	<script>
+	    function reset()
+        {
+        	document.getElementById('min').value = 1;
+			document.getElementById('ave').value = 7;
+			document.getElementById('max').value = 10;
+
+			document.getElementById('gain').value = 100;
+
+			document.getElementById('base').value = 30;
+    		document.getElementById('extra').value = 20;
+    		document.getElementById('accela').value = 30;
+    		document.getElementById('accelb').value = 30;
+        }
+
+        function save()
+        {
+        	localStorage.min = document.getElementById('min').value;
+			localStorage.ave = document.getElementById('ave').value;
+			localStorage.max = document.getElementById('max').value;
+
+			localStorage.gain = document.getElementById('gain').value;
+
+			localStorage.base = document.getElementById('base').value;
+    		localStorage.extra = document.getElementById('extra').value;
+    		localStorage.accela = document.getElementById('accela').value;
+    		localStorage.accelb = document.getElementById('accelb').value;
+        }
+
+        function load()
+        {
+        	if(localStorage.accelb)
+        	{
+        		document.getElementById('min').value = localStorage.min;
+				document.getElementById('ave').value = localStorage.ave;
+				document.getElementById('max').value = localStorage.max;
+
+				document.getElementById('gain').value = localStorage.gain;
+
+				document.getElementById('base').value = localStorage.base;
+    			document.getElementById('extra').value = localStorage.extra;
+    			document.getElementById('accela').value = localStorage.accela;
+    			document.getElementById('accelb').value = localStorage.accelb;
+    		}
+        }
+	</script>
 
 </html>
