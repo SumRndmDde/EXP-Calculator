@@ -28,7 +28,7 @@
 			var gain = Number(document.getElementById('gain').value);
 
 			var result = "";
-			result += "<br><font size='5' style='text-decoration: underline'>Results:</font><br><br>";
+			result += "<br><font size='5' style='text-decoration: underline'>Results:</font><br><br><ul>";
 
 			for(var i = min; i <= max; i += 1)
 			{
@@ -50,7 +50,7 @@
 					prevDefeats = 0;
 				}
 
-				result += "Level " + String(i) + "<br>";
+				result += "<li>Level " + String(i) + "<br>";
 				if(preLvl.checked && i != 1)
 				{
 					result += "EXP from previous level: " + String(prevLevel) + " (" + String(prevDefeats) + " Enemies)<br>";
@@ -72,8 +72,10 @@
 					result += "Total EXP from level " + String(ave) + ": " + String(totalFromAve) + " (" + String(totalFromAveDefeats) + " Enemies)<br>";
 				}
 
-				result += "<br>";
+				result += "<br></li>";
 			}
+
+			result += "</ul>";
 
 			document.getElementById('Results').innerHTML = String(result);
 		}
@@ -123,6 +125,9 @@
 			<br>
 			<br>
 			<a href="http://www.youtube.com/SumRndmDde">SumRndmDde's YouTube Channel</a>
+			<br>
+			<br>
+			<a href="http://SumRndmDde.github.io/RPGMV-Damage-Calculator">Damage Calculator</a>
 			<br>
 			<br>
 		</p>
@@ -227,7 +232,7 @@
 			<br><br>
 		</p>
 
-		<p id="Results" style="background-color:white;">
+		<P id="Results" style="background-color:white;">
 			<br>
 			<font size='5' style='text-decoration: underline'>Results:</font>
 			<br>
@@ -236,7 +241,7 @@
 			</script>
 			<br>
 			<br>
-		</p>
+		</P>
 
 		<p>
 			<br>
